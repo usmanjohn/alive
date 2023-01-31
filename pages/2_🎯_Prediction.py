@@ -74,33 +74,6 @@ scaler = StandardScaler()
 model = RandomForestClassifier()
 or_encode = OrdinalEncoder()
 
-#Salary Prediction
-regress = dataset[dataset['status']=='Placed']
-X_1 = regress.drop(['spec_higher_edu', '10_grade', '12_grade', 'employ_test', 'salary', 'status'], axis =1)
-y_1 = regress['salary']
-
-def user_input_1():
-    left, middle, right = st.columns(3)
-    pre_gender_1 = left.radio('CHoose a gende here', options=X_1['gender'].unique())
-    postgrad_major = middle.radio('Choose a department', options=X_1['department'].unique())
-    under_major = right.radio('Choose the undergraduate major', options=X_1['undergrad_major'].unique())
-    left, middle, right = st.columns(3)
-    under_g_per = left.slider('Undergraduate grade percent', min_value=50, max_value=100, value=80)
-    graduate_grade = middle.slider('Graduate grade percent', min_value=50, max_value=100, value=70)
-    work_exper = right.radio('Have previous work experience?', options=X_1['work_exp'].unique())
-
-    features_1 = pd.DataFrame({'gender':pre_gender_1, 'degree_percent': under_g_per, 'undergrad_major':under_major,
-                           'work_exp':work_exper, 'post_grad_percent':graduate_grade,'department':postgrad_major}, index = [0])
-    
-    return features_1
-input_df_1 = user_input_1()
-
-
-load_pickle_1 = pickle.load(open('model_reg.pkl','rb'))
-prediction_1 = load_pickle_1.predict(input_df_1)
-st.subheader('How much is the predicted salary?')
-fin_val = prediction_1/100
-st.write(fin_val)
 
 #################
 
@@ -137,6 +110,34 @@ st.markdown("<h3 style = 'text-align:center'>Predict the possible Salary!</h3>",
     unsafe_allow_html=True)
 st.markdown('---')
 
+
+#Salary Prediction
+regress = dataset[dataset['status']=='Placed']
+X_1 = regress.drop(['spec_higher_edu', '10_grade', '12_grade', 'employ_test', 'salary', 'status'], axis =1)
+y_1 = regress['salary']
+
+def user_input_1():
+    left, middle, right = st.columns(3)
+    pre_gender_1 = left.radio('CHoose a gende here', options=X_1['gender'].unique())
+    postgrad_major = middle.radio('Choose a department', options=X_1['department'].unique())
+    under_major = right.radio('Choose the undergraduate major', options=X_1['undergrad_major'].unique())
+    left, middle, right = st.columns(3)
+    under_g_per = left.slider('Undergraduate grade percent', min_value=50, max_value=100, value=80)
+    graduate_grade = middle.slider('Graduate grade percent', min_value=50, max_value=100, value=70)
+    work_exper = right.radio('Have previous work experience?', options=X_1['work_exp'].unique())
+
+    features_1 = pd.DataFrame({'gender':pre_gender_1, 'degree_percent': under_g_per, 'undergrad_major':under_major,
+                           'work_exp':work_exper, 'post_grad_percent':graduate_grade,'department':postgrad_major}, index = [0])
+    
+    return features_1
+input_df_1 = user_input_1()
+
+
+load_pickle_1 = pickle.load(open('model_reg.pkl','rb'))
+prediction_1 = load_pickle_1.predict(input_df_1)
+st.subheader('How much is the predicted salary?')
+fin_val = prediction_1/100
+st.write(fin_val)
 
 
 

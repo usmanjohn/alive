@@ -74,38 +74,6 @@ scaler = StandardScaler()
 model = RandomForestClassifier()
 or_encode = OrdinalEncoder()
 
-cols_to_drop = ['spec_higher_edu', '10_grade', '12_grade', 'employ_test', 'post_grad_percent', 'salary']
-train = dataset.drop(cols_to_drop, axis = 1)
-X = train.drop('status', axis = 1)
-
-def user_input():
-    left, right = st.columns(2)
-    pre_gender = left.radio('CHoose a gender', options=X['gender'].unique())
-    grade_percent = right.slider('Students Mark', min_value = 50, max_value=100, value=75)
-    left, middle, right= st.columns(3)
-    undergrad_major = left.radio('Undergraduate major', options=X['undergrad_major'].unique())
-    work_experience = middle.radio('Does Student have previous work experience?', options=X['work_exp'].unique())
-    departmet_of = right.selectbox("Choose a student's department", options=X['department'].unique())
-    features = pd.DataFrame({'gender':pre_gender, 'degree_percent': grade_percent, 'undergrad_major':undergrad_major,
-                            'work_exp':work_experience, 'department':departmet_of}, index = [0])
-    
-    return features
-input_df = user_input()
-
-
-load_pickle = pickle.load(open('model.pkl','rb'))
-prediction = load_pickle.predict(input_df)
-prediction_prob = load_pickle.predict_proba(input_df)
-st.subheader('Will the Student got a job?')
-job_find = np.array(['No', 'Yes'] )
-st.write(job_find[prediction])
-st.write("With the probability of"+ str(prediction_prob))
-
-st.markdown('---')
-
-st.markdown("<h3 style = 'text-align:center'>Predict the possible Salary!</h3>",
-    unsafe_allow_html=True)
-st.markdown('---')
 #Salary Prediction
 regress = dataset[dataset['status']=='Placed']
 X_1 = regress.drop(['spec_higher_edu', '10_grade', '12_grade', 'employ_test', 'salary', 'status'], axis =1)
@@ -133,6 +101,41 @@ prediction_1 = load_pickle_1.predict(input_df_1)
 st.subheader('How much is the predicted salary?')
 fin_val = prediction_1/100
 st.write(fin_val)
+
+#################
+
+cols_to_drop = ['spec_higher_edu', '10_grade', '12_grade', 'employ_test', 'post_grad_percent', 'salary']
+train = dataset.drop(cols_to_drop, axis = 1)
+X = train.drop('status', axis = 1)
+
+def user_input():
+    left, right = st.columns(2)
+    pre_gender = left.radio('CHoose a gender', options=X['gender'].unique())
+    grade_percent = right.slider('Students Mark', min_value = 50, max_value=100, value=75)
+    left, middle, right= st.columns(3)
+    undergrad_major = left.radio('Undergraduate major', options=X['undergrad_major'].unique())
+    work_experience = middle.radio('Does Student have previous work experience?', options=X['work_exp'].unique())
+    departmet_of = right.selectbox("Choose a student's department", options=X['department'].unique())
+    features = pd.DataFrame({'gender':pre_gender, 'degree_percent': grade_percent, 'undergrad_major':undergrad_major,
+                            'work_exp':work_experience, 'department':departmet_of}, index = [0])
+    
+    return features
+input_df = user_input()
+
+
+load_pickle = pickle.load(open('model_classifier.pkl','rb'))
+prediction = load_pickle.predict(input_df)
+prediction_prob = load_pickle.predict_proba(input_df)
+st.subheader('Will the Student got a job?')
+job_find = np.array(['No', 'Yes'] )
+st.write(job_find[prediction])
+st.write("With the probability of"+ str(prediction_prob))
+
+st.markdown('---')
+
+st.markdown("<h3 style = 'text-align:center'>Predict the possible Salary!</h3>",
+    unsafe_allow_html=True)
+st.markdown('---')
 
 
 

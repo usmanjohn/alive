@@ -326,3 +326,29 @@ def set_background(png_file):
     </style>
     ''' % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
+
+
+
+####Lottie
+
+import json
+import requests
+import streamlit_lottie as st_lottie
+
+def load_lottiefile(filepath:str):
+    with open(filepath, 'r') as f:
+        return json.load(f)
+
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    else:
+        return r.json()
+
+url = 'https://assets1.lottiefiles.com/packages/lf20_yrelFtPfpX.json'
+
+lottie_code= load_lottiefile('lottifiles/lott.json')
+lottie_graph = load_lottieurl(url = url)
+st_lottie(lottie_graph,key = 'hello')
+st_lottie(lottie_code)

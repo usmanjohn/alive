@@ -1,8 +1,4 @@
 import streamlit as st
-import base64
-import json
-import streamlit_lottie as st_lottie
-import requests
 
 
 
@@ -14,13 +10,13 @@ st.success('Please choose one of the menu on the sidebar')
 
 
 
-#if "my_input" not in st.session_state:
-#    st.session_state['my_input']= "default"
-#my_input = st.text_input('Input a text here', key = ['my_input'])
-#submit = st.button('Submit')
-#if submit:
-#    st.session_state['my_input'] = my_input
-#    st.write('You have entered: ', my_input)
+if "my_input" not in st.session_state:
+    st.session_state['my_input']= "default"
+my_input = st.text_input('Input a text here', key = ['my_input'])
+submit = st.button('Submit')
+if submit:
+    st.session_state['my_input'] = my_input
+    st.write('You have entered: ', my_input)
 
 
 

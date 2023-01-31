@@ -133,7 +133,7 @@ def user_input_1():
 input_df_1 = user_input_1()
 
 
-load_pickle_1 = pickle.load(open('model_reg.pkl','rb'))
+load_pickle_1 = pickle.load(open('model_regressor.pkl','rb'))
 prediction_1 = load_pickle_1.predict(input_df_1)
 st.subheader('How much is the predicted salary?')
 fin_val = prediction_1/100
